@@ -1,0 +1,2 @@
+This is a test file. New addition in working directory
+Adding one more line to test direct commit
