@@ -1,0 +1,2 @@
+This file contains some text.
+This text is going to be read from main.go file

@@ -1,0 +1,13 @@
+// create a todolist 
+// list will take input from stdin
+/*
+list will have CRUD functionality --> 
+1) add new
+2) remove specific element
+3) get specific element
+4) update specific element
+5) get entire list
+6) delete entire list
+*/
+
+go module specifies the dependencies needed to run your code -> go version and other set of modules it requires
