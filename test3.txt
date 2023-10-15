@@ -1,3 +1,0 @@
-adding one more file to test direct commit
-modifying test 2 for inspecting .gitignore addition without untracking
-comment for removing the tracking
