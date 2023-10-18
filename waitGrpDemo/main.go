@@ -34,5 +34,4 @@ func main() {
 	wg.Wait() // waiting for all the go routines to complete
 
 	fmt.Println("Go main function got completed")
-
 }
