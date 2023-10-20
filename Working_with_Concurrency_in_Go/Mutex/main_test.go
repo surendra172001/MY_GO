@@ -1,13 +1,27 @@
 package main
 
-import "testing"
+import (
+	"io"
+	"os"
+	"strings"
+	"testing"
+)
 
-func TestUpdateMessage(t *testing.T) {
-	wg.Add(2)
-	go updateMessage("Hello, universe")
-	go updateMessage("Hello, cosmos")
-	wg.Wait()
-	if msg != "Hello, universe" {
-		t.Error("Wrong message is being setup")
+func Test_Main(t *testing.T) {
+	stdOut := os.Stdout
+	r, w, _ := os.Pipe()
+	os.Stdout = w
+
+	main()
+
+	w.Close()
+	os.Stdout = stdOut
+
+	res, _ := io.ReadAll(r)
+	out := string(res)
+
+	if !strings.Contains(out, "34320") {
+		t.Error("Wrong output")
 	}
+
 }
