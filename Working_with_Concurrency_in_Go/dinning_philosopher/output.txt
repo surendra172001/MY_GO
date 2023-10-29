@@ -1,0 +1,228 @@
+Running test a second
+Seated: Aryabhatt
+Seated: Aristotle
+Seated: Socrates
+Seated: Hercules
+Seated: Neuman
+Right Fork pickup: Neuman
+Left Fork pickup: Neuman
+Eating: Neuman
+Right Fork pickup: Aristotle
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Left Fork pickup: Aryabhatt
+Right Fork pickup: Hercules
+Right Fork pickup: Socrates
+Left Fork pickup: Socrates
+Thinking: Neuman
+Thinking: Aristotle
+Right Fork pickup: Aristotle
+Left Fork pickup: Hercules
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Right Fork pickup: Neuman
+Left Fork pickup: Aristotle
+Thinking: Aryabhatt
+Left Fork pickup: Aryabhatt
+Left Fork pickup: Neuman
+Eating: Aristotle
+Thinking: Aristotle
+Eating: Socrates
+Right Fork pickup: Aristotle
+Thinking: Socrates
+Right Fork pickup: Socrates
+Left Fork pickup: Socrates
+Eating: Socrates
+Thinking: Socrates
+Left Fork pickup: Aristotle
+Right Fork pickup: Socrates
+Eating: Aristotle
+Eating: Hercules
+Thinking: Hercules
+Thinking: Aristotle
+Philosopher Aristotle is satisfed
+Philosopher Aristotle has left the table
+Right Fork pickup: Hercules
+Left Fork pickup: Hercules
+Eating: Hercules
+Thinking: Hercules
+Left Fork pickup: Socrates
+Eating: Socrates
+Eating: Neuman
+Right Fork pickup: Hercules
+Thinking: Neuman
+Thinking: Socrates
+Philosopher Socrates is satisfed
+Philosopher Socrates has left the table
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Right Fork pickup: Neuman
+Left Fork pickup: Hercules
+Eating: Hercules
+Thinking: Hercules
+Thinking: Aryabhatt
+Left Fork pickup: Aryabhatt
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Philosopher Hercules is satisfed
+Philosopher Hercules has left the table
+Thinking: Aryabhatt
+Left Fork pickup: Neuman
+Eating: Neuman
+Philosopher Aryabhatt is satisfed
+Philosopher Aryabhatt has left the table
+Thinking: Neuman
+Philosopher Neuman is satisfed
+Philosopher Neuman has left the table
+Running test twice a second
+Seated: Aryabhatt
+Seated: Aristotle
+Seated: Socrates
+Seated: Hercules
+Seated: Neuman
+Right Fork pickup: Neuman
+Left Fork pickup: Neuman
+Eating: Neuman
+Right Fork pickup: Hercules
+Right Fork pickup: Aristotle
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Right Fork pickup: Socrates
+Left Fork pickup: Socrates
+Left Fork pickup: Aryabhatt
+Thinking: Aristotle
+Thinking: Neuman
+Right Fork pickup: Aristotle
+Right Fork pickup: Neuman
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Eating: Socrates
+Left Fork pickup: Hercules
+Thinking: Socrates
+Thinking: Aryabhatt
+Left Fork pickup: Aryabhatt
+Right Fork pickup: Socrates
+Eating: Hercules
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Left Fork pickup: Neuman
+Thinking: Aristotle
+Thinking: Hercules
+Right Fork pickup: Hercules
+Right Fork pickup: Aristotle
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Eating: Neuman
+Left Fork pickup: Socrates
+Thinking: Neuman
+Thinking: Aristotle
+Philosopher Aristotle is satisfed
+Right Fork pickup: Neuman
+Philosopher Aristotle has left the table
+Eating: Socrates
+Left Fork pickup: Hercules
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Thinking: Aryabhatt
+Thinking: Socrates
+Left Fork pickup: Aryabhatt
+Right Fork pickup: Socrates
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Eating: Hercules
+Thinking: Hercules
+Thinking: Aryabhatt
+Left Fork pickup: Neuman
+Philosopher Aryabhatt is satisfed
+Philosopher Aryabhatt has left the table
+Right Fork pickup: Hercules
+Left Fork pickup: Hercules
+Eating: Hercules
+Thinking: Hercules
+Left Fork pickup: Socrates
+Eating: Socrates
+Philosopher Hercules is satisfed
+Philosopher Hercules has left the table
+Thinking: Socrates
+Eating: Neuman
+Thinking: Neuman
+Philosopher Socrates is satisfed
+Philosopher Socrates has left the table
+Philosopher Neuman is satisfed
+Philosopher Neuman has left the table
+Running test no time
+Seated: Aryabhatt
+Seated: Aristotle
+Seated: Neuman
+Seated: Socrates
+Right Fork pickup: Aristotle
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Thinking: Aristotle
+Right Fork pickup: Neuman
+Left Fork pickup: Neuman
+Eating: Neuman
+Thinking: Neuman
+Left Fork pickup: Aryabhatt
+Seated: Hercules
+Right Fork pickup: Hercules
+Right Fork pickup: Socrates
+Left Fork pickup: Socrates
+Right Fork pickup: Neuman
+Right Fork pickup: Aristotle
+Eating: Socrates
+Thinking: Socrates
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Thinking: Aryabhatt
+Left Fork pickup: Hercules
+Left Fork pickup: Aryabhatt
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Thinking: Aryabhatt
+Right Fork pickup: Socrates
+Eating: Hercules
+Thinking: Hercules
+Left Fork pickup: Aristotle
+Right Fork pickup: Hercules
+Left Fork pickup: Hercules
+Left Fork pickup: Aryabhatt
+Eating: Aristotle
+Left Fork pickup: Neuman
+Thinking: Aristotle
+Left Fork pickup: Socrates
+Right Fork pickup: Aristotle
+Eating: Socrates
+Thinking: Socrates
+Right Fork pickup: Socrates
+Left Fork pickup: Socrates
+Eating: Socrates
+Thinking: Socrates
+Left Fork pickup: Aristotle
+Eating: Aristotle
+Thinking: Aristotle
+Philosopher Socrates is satisfed
+Eating: Hercules
+Thinking: Hercules
+Philosopher Socrates has left the table
+Right Fork pickup: Hercules
+Left Fork pickup: Hercules
+Eating: Hercules
+Thinking: Hercules
+Philosopher Aristotle is satisfed
+Philosopher Aristotle has left the table
+Eating: Neuman
+Thinking: Neuman
+Philosopher Hercules is satisfed
+Philosopher Hercules has left the table
+Right Fork pickup: Neuman
+Right Fork pickup: Aryabhatt
+Eating: Aryabhatt
+Thinking: Aryabhatt
+Philosopher Aryabhatt is satisfed
+Philosopher Aryabhatt has left the table
+Left Fork pickup: Neuman
+Eating: Neuman
+Thinking: Neuman
+Philosopher Neuman is satisfed
+Philosopher Neuman has left the table
