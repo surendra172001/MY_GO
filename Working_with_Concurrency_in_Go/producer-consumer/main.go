@@ -128,3 +128,132 @@ func main() {
 		color.Green("It was a great day")
 	}
 }
+
+/*
+package main
+
+import (
+	"fmt"
+	"math/rand"
+	"time"
+)
+
+const totalPizzas = 10
+
+var pizzasMade, pizzasFailed int
+
+type PizzaOrder struct {
+	pizzaNumber int
+	success     bool
+	msg         string
+}
+
+type Producer struct {
+	data chan PizzaOrder
+	quit chan chan error
+}
+
+func (p *Producer) Close() error {
+	ch := make(chan error)
+	p.quit <- ch
+	return <-ch
+}
+
+func makePizza(pizzaNumber int) *PizzaOrder {
+	pizzaNumber++
+	if pizzaNumber <= totalPizzas {
+		// compute delay
+		delay := rand.Intn(5) + 1
+		// print message with pizzanumber and delay
+		fmt.Printf("Order#%d is received\n", pizzaNumber)
+		// compute a random number to determine the pizza state
+		pizzaState := rand.Intn(12) + 1
+		success := false
+		msg := ""
+		if pizzaState < 5 {
+			pizzasFailed++
+		} else {
+			success = true
+			pizzasMade++
+		}
+
+		fmt.Printf("Preparing Order#%d, it will take %d seconds\n", pizzaNumber, delay)
+
+		time.Sleep(time.Second * time.Duration(delay))
+
+		if pizzaState <= 2 {
+			msg = fmt.Sprintf("Order#%d can not completed since ingredients not available", pizzaNumber)
+		} else if pizzaState <= 4 {
+			msg = fmt.Sprintf("Order#%d can not completed since chef is not available", pizzaNumber)
+		} else {
+			msg = fmt.Sprintf("Order#%d is complete", pizzaNumber)
+		}
+		// create pizza and return it
+		return &PizzaOrder{pizzaNumber, success, msg}
+	}
+	return &PizzaOrder{pizzaNumber: pizzaNumber}
+}
+
+func pizzeria(pizzaMaker *Producer) {
+	var i = 0
+
+	for {
+		currentPizza := makePizza(i)
+		if currentPizza != nil {
+			i = currentPizza.pizzaNumber
+			select {
+			case pizzaMaker.data <- *currentPizza:
+			case quitChan := <-pizzaMaker.quit:
+				close(pizzaMaker.data)
+				close(quitChan)
+				return
+			}
+		}
+	}
+}
+
+func main() {
+	// Printing start message
+	fmt.Println("This is a Pizza restaurant")
+
+	// create a producer
+	pizzaMaker := Producer{
+		data: make(chan PizzaOrder),
+		quit: make(chan chan error),
+	}
+
+	// start the producer
+	go pizzeria(&pizzaMaker)
+
+	// start the consumer
+	for i := range pizzaMaker.data {
+		if i.pizzaNumber <= totalPizzas {
+			fmt.Println(i.msg)
+			if i.success {
+				fmt.Printf("Order#%d is out for delivery\n", i.pizzaNumber)
+			} else {
+				fmt.Println("Customer is mad...")
+			}
+		} else {
+			err := pizzaMaker.Close()
+			if err != nil {
+				fmt.Printf("There is some error while closing the program - %v\n", err)
+			}
+			close(pizzaMaker.quit)
+		}
+	}
+
+	// print final stats and messages
+	fmt.Printf("Pizzas made - %d\n", pizzasMade)
+	fmt.Printf("Pizzas failed - %d\n", pizzasFailed)
+	fmt.Printf("Total Orders - %d\n", pizzasMade+pizzasFailed)
+	if pizzasFailed < 2 {
+		fmt.Println("It was a great day at work, The restaurant has pretty high standards")
+	} else if pizzasFailed < 4 {
+		fmt.Println("It was a good day at work, The restaurant has decent standards")
+	} else {
+		fmt.Println("It was a disastorous day at work, The restaurnat has poor standards")
+	}
+}
+
+*/
