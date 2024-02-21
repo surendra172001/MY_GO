@@ -10,15 +10,15 @@ import (
 var templatesPath = "./cmd/web/templates"
 
 type TemplateData struct {
-	StringMap       map[string]string
-	IntMap          map[string]int
-	FloatMap        map[string]float64
-	DataMap         map[string]any
-	Flash           string
-	Warning         string
-	Error           string
-	isAuthenticated bool
-	Now             time.Time
+	StringMap     map[string]string
+	IntMap        map[string]int
+	FloatMap      map[string]float64
+	DataMap       map[string]any
+	Flash         string
+	Warning       string
+	Error         string
+	Authenticated bool
+	Now           time.Time
 	// User *data.user
 }
 
@@ -54,15 +54,15 @@ func (app *Config) render(w http.ResponseWriter, r *http.Request, t string, td *
 }
 
 func (app *Config) AddDefaultData(td *TemplateData, r *http.Request) *TemplateData {
-	td.Flash = app.session.PopString(r.Context(), "flash")
-	td.Warning = app.session.PopString(r.Context(), "warning")
-	td.Error = app.session.PopString(r.Context(), "error")
-	td.isAuthenticated = app.isAuthenticated(r)
+	td.Flash = app.Session.PopString(r.Context(), "flash")
+	td.Warning = app.Session.PopString(r.Context(), "warning")
+	td.Error = app.Session.PopString(r.Context(), "error")
+	td.Authenticated = app.isAuthenticated(r)
 	// TODO: if user is authenticated get more info about the user
 	td.Now = time.Now()
 	return td
 }
 
 func (app *Config) isAuthenticated(r *http.Request) bool {
-	return app.session.Exists(r.Context(), "userID")
+	return app.Session.Exists(r.Context(), "userID")
 }

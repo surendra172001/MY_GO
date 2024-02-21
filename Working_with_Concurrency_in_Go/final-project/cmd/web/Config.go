@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"final-project/cmd/web/data"
 	"log"
 	"sync"
 
@@ -9,9 +10,10 @@ import (
 )
 
 type Config struct {
-	session     *scs.SessionManager
+	Session     *scs.SessionManager
 	DB          *sql.DB
 	InfoLogger  *log.Logger
 	ErrorLogger *log.Logger
 	Wait        *sync.WaitGroup
+	Models      data.Models
 }

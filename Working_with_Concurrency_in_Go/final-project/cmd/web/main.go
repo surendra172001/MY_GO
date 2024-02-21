@@ -2,11 +2,15 @@ package main
 
 import (
 	"database/sql"
+	"encoding/gob"
+	"final-project/cmd/web/data"
 	"fmt"
 	"log"
 	"net/http"
 	"os"
+	"os/signal"
 	"sync"
+	"syscall"
 	"time"
 
 	"github.com/alexedwards/scs/redisstore"
@@ -40,12 +44,15 @@ func main() {
 	errorLogger := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	app := Config{
-		session:     session,
+		Session:     session,
 		DB:          db,
 		Wait:        &wg,
 		InfoLogger:  infoLogger,
 		ErrorLogger: errorLogger,
+		Models:      data.New(db),
 	}
+
+	go app.listenForShutdown()
 
 	app.serve()
 
@@ -67,8 +74,9 @@ func (app *Config) serve() {
 }
 
 func initSession() *scs.SessionManager {
+	gob.Register(data.User{})
 	// session initialization
-	session := &scs.SessionManager{}
+	session := scs.New()
 	session.Store = redisstore.New(initRedis())
 	session.Lifetime = 24 * time.Hour
 	session.Cookie.Persist = true
@@ -81,7 +89,7 @@ func initRedis() *redis.Pool {
 	redisPool := &redis.Pool{
 		MaxIdle: 10,
 		Dial: func() (redis.Conn, error) {
-			return redis.Dial("tcp", os.Getenv("REDIS"))
+			return redis.Dial("tcp", "127.0.0.1:6379")
 		},
 	}
 	return redisPool
@@ -100,7 +108,7 @@ func connectToDB() *sql.DB {
 
 	count := 0
 
-	DSN := os.Getenv("DSN")
+	DSN := "host=localhost port=5432 user=postgres password=password dbname=concurrency sslmode=disable timezone=UTC connect_timeout=5"
 
 	// log.Println("DSN", DSN)
 
@@ -144,4 +152,21 @@ func openDB(dsn string) (*sql.DB, error) {
 	}
 	// fmt.Println("err", err)
 	return conn, nil
+}
+
+func (app *Config) listenForShutdown() {
+	app.InfoLogger.Println("Listening for shutdown..")
+	quit := make(chan os.Signal, 1)
+
+	signal.Notify(quit, syscall.SIGINT, syscall.SIGABRT)
+
+	<-quit
+	app.shutdown()
+	os.Exit(0)
+}
+
+func (app *Config) shutdown() {
+	app.InfoLogger.Println("doing cleanup tasks...")
+	app.Wait.Wait()
+	app.InfoLogger.Println("Done the cleanup tasks and shutting down...")
 }
