@@ -41,6 +41,12 @@ func (app *Config) PostLogin(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if !validPassword {
+		msg := Message{
+			To:      "info@mycompany.com",
+			Subject: "Invalid credentials",
+			Data:    "Wrong password entered",
+		}
+		app.SendMail(msg)
 		app.Session.Put(r.Context(), "error", "Invalid credentials.")
 		http.Redirect(w, r, "/login", http.StatusSeeOther)
 		return

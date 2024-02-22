@@ -52,10 +52,48 @@ func main() {
 		Models:      data.New(db),
 	}
 
+	app.Mailer = app.createMailer()
+	go app.listenForMail()
+
 	go app.listenForShutdown()
 
 	app.serve()
 
+}
+
+func (app *Config) listenForMail() {
+	for {
+
+		select {
+		case msg := <-app.Mailer.MailerChan:
+			app.Mailer.SendMail(msg, app.Mailer.ErrorChan)
+		case err := <-app.Mailer.ErrorChan:
+			app.ErrorLogger.Println(err.Error())
+		case <-app.Mailer.DoneChan:
+			return
+		}
+	}
+
+}
+
+func (app *Config) createMailer() *Mail {
+	mailerChan := make(chan Message, 100)
+	errorChan := make(chan error)
+	mailerDoneChan := make(chan bool)
+
+	mailer := &Mail{
+		Domain:      "localhost",
+		Host:        "localhost",
+		Port:        1025,
+		Encryption:  "none",
+		FromAddress: "info@mycompany.com",
+		FromName:    "info",
+		Wait:        app.Wait,
+		ErrorChan:   errorChan,
+		MailerChan:  mailerChan,
+		DoneChan:    mailerDoneChan,
+	}
+	return mailer
 }
 
 func (app *Config) serve() {
@@ -168,5 +206,10 @@ func (app *Config) listenForShutdown() {
 func (app *Config) shutdown() {
 	app.InfoLogger.Println("doing cleanup tasks...")
 	app.Wait.Wait()
+	app.InfoLogger.Println("Done waiting")
+	app.Mailer.DoneChan <- true
+	close(app.Mailer.MailerChan)
+	close(app.Mailer.ErrorChan)
+	close(app.Mailer.DoneChan)
 	app.InfoLogger.Println("Done the cleanup tasks and shutting down...")
 }
