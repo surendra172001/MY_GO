@@ -1,6 +1,9 @@
 package main
 
 import (
+	"final-project/cmd/web/data"
+	"fmt"
+	"html/template"
 	"net/http"
 )
 
@@ -74,7 +77,44 @@ func (app *Config) RegisterPage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Config) PostRegister(w http.ResponseWriter, r *http.Request) {
+	// parse form
+	err := r.ParseForm()
+	if err != nil {
+		app.ErrorLogger.Println("Form Parsing error", err.Error())
+		return
+	}
+	// create a user
+	u := data.User{
+		Email:     r.FormValue("email"),
+		FirstName: r.FormValue("first-name"),
+		LastName:  r.FormValue("last-name"),
+		Password:  r.FormValue("password"),
+		Active:    0,
+		IsAdmin:   0,
+	}
 
+	_, err = u.Insert(u)
+	if err != nil {
+		app.Session.Put(r.Context(), "error", "User Creation error")
+		http.Redirect(w, r, "/Register", http.StatusSeeOther)
+		return
+	}
+
+	// send an activation email
+	url := fmt.Sprintf("http://localhost/activate?email=%s", u.Email)
+	signedUrl := GenerateTokenFromString(url)
+	app.InfoLogger.Println("Signed URL", signedUrl)
+
+	msg := Message{
+		To:       u.Email,
+		Subject:  "Account activation",
+		Template: "confirmation-email",
+		Data:     template.HTML(signedUrl),
+	}
+
+	app.SendMail(msg)
+	app.Session.Put(r.Context(), "flash", "Success in user registration, Please check your email for account activation")
+	http.Redirect(w, r, "/login", http.StatusSeeOther)
 }
 
 func (app *Config) ActivateAccount(w http.ResponseWriter, r *http.Request) {
