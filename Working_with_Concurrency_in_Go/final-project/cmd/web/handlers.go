@@ -118,5 +118,38 @@ func (app *Config) PostRegister(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Config) ActivateAccount(w http.ResponseWriter, r *http.Request) {
+	// validate url
+	url := fmt.Sprintf("http://localhost%s", r.URL)
+	app.InfoLogger.Println(url)
+	okay := VerifyToken(url)
+
+	if !okay {
+		app.Session.Put(r.Context(), "error", "Invalid Activation url")
+		http.Redirect(w, r, "/Register", http.StatusSeeOther)
+		return
+	}
+
+	email := r.URL.Query().Get("email")
+	user, err := app.Models.User.GetByEmail(email)
+
+	if err != nil {
+		app.Session.Put(r.Context(), "error", "No user found with the specified email")
+		app.ErrorLogger.Println(err.Error())
+		http.Redirect(w, r, "/Register", http.StatusSeeOther)
+		return
+	}
+
+	user.Active = 1
+	err = user.Update()
+
+	if err != nil {
+		app.Session.Put(r.Context(), "error", "User activation failed")
+		app.ErrorLogger.Println(err.Error())
+		http.Redirect(w, r, "/", http.StatusInternalServerError)
+		return
+	}
+
+	app.Session.Put(r.Context(), "flash", "User activation Successful")
+	http.Redirect(w, r, "/", http.StatusSeeOther)
 
 }
