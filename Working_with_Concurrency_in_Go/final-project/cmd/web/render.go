@@ -1,6 +1,7 @@
 package main
 
 import (
+	"final-project/cmd/web/data"
 	"fmt"
 	"html/template"
 	"net/http"
@@ -13,13 +14,13 @@ type TemplateData struct {
 	StringMap     map[string]string
 	IntMap        map[string]int
 	FloatMap      map[string]float64
-	DataMap       map[string]any
+	Data          map[string]any
 	Flash         string
 	Warning       string
 	Error         string
 	Authenticated bool
 	Now           time.Time
-	// User *data.user
+	User          *data.User
 }
 
 func (app *Config) render(w http.ResponseWriter, r *http.Request, t string, td *TemplateData) {
@@ -58,7 +59,11 @@ func (app *Config) AddDefaultData(td *TemplateData, r *http.Request) *TemplateDa
 	td.Warning = app.Session.PopString(r.Context(), "warning")
 	td.Error = app.Session.PopString(r.Context(), "error")
 	td.Authenticated = app.isAuthenticated(r)
-	// TODO: if user is authenticated get more info about the user
+	if td.Authenticated {
+		if user, ok := app.Session.Get(r.Context(), "user").(data.User); ok {
+			td.User = &user
+		}
+	}
 	td.Now = time.Now()
 	return td
 }

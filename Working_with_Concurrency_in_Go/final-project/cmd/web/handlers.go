@@ -12,6 +12,10 @@ func (app *Config) HomePage(w http.ResponseWriter, r *http.Request) {
 }
 
 func (app *Config) LoginPage(w http.ResponseWriter, r *http.Request) {
+	if app.Session.Exists(r.Context(), "userID") {
+		http.Redirect(w, r, "/", http.StatusSeeOther)
+		return
+	}
 	app.render(w, r, "login.page.gohtml", nil)
 }
 
@@ -152,4 +156,28 @@ func (app *Config) ActivateAccount(w http.ResponseWriter, r *http.Request) {
 	app.Session.Put(r.Context(), "flash", "User activation Successful")
 	http.Redirect(w, r, "/", http.StatusSeeOther)
 
+}
+
+func (app *Config) ChooseSubscription(w http.ResponseWriter, r *http.Request) {
+	// authorize user
+	if !app.Session.Exists(r.Context(), "userID") {
+		app.Session.Put(r.Context(), "warning", "You must login to see this page")
+		http.Redirect(w, r, "/login", http.StatusTemporaryRedirect)
+		return
+	}
+
+	plans, err := app.Models.Plan.GetAll()
+	if err != nil {
+		app.ErrorLogger.Println("Not able to fetch plan")
+		w.WriteHeader(http.StatusInternalServerError)
+		return
+	}
+
+	dataMap := map[string]any{
+		"plans": plans,
+	}
+
+	app.render(w, r, "plan.page.gohtml", &TemplateData{
+		Data: dataMap,
+	})
 }
