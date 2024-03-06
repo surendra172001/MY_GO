@@ -44,18 +44,23 @@ func main() {
 	errorLogger := log.New(os.Stdout, "INFO\t", log.Ldate|log.Ltime|log.Lshortfile)
 
 	app := Config{
-		Session:     session,
-		DB:          db,
-		Wait:        &wg,
-		InfoLogger:  infoLogger,
-		ErrorLogger: errorLogger,
-		Models:      data.New(db),
+		Session:       session,
+		DB:            db,
+		Wait:          &wg,
+		InfoLogger:    infoLogger,
+		ErrorLogger:   errorLogger,
+		Models:        data.New(db),
+		rootDir:       ".",
+		ErrorChan:     make(chan error),
+		ErrorChanDone: make(chan bool),
 	}
 
 	app.Mailer = app.createMailer()
 	go app.listenForMail()
 
 	go app.listenForShutdown()
+
+	go app.listenForError()
 
 	app.serve()
 
@@ -192,6 +197,18 @@ func openDB(dsn string) (*sql.DB, error) {
 	return conn, nil
 }
 
+func (app *Config) listenForError() {
+	for {
+		select {
+		case err := <-app.ErrorChan:
+			app.ErrorLogger.Println(err.Error())
+		case <-app.ErrorChanDone:
+			app.InfoLogger.Println("Stopping to listen to errors")
+			return
+		}
+	}
+}
+
 func (app *Config) listenForShutdown() {
 	app.InfoLogger.Println("Listening for shutdown..")
 	quit := make(chan os.Signal, 1)
@@ -208,8 +225,12 @@ func (app *Config) shutdown() {
 	app.Wait.Wait()
 	app.InfoLogger.Println("Done waiting")
 	app.Mailer.DoneChan <- true
+	app.ErrorChanDone <- true
+	app.InfoLogger.Println("Done Putting Value")
 	close(app.Mailer.MailerChan)
 	close(app.Mailer.ErrorChan)
 	close(app.Mailer.DoneChan)
-	app.InfoLogger.Println("Done the cleanup tasks and shutting down...")
+	close(app.ErrorChan)
+	close(app.ErrorChanDone)
+	app.InfoLogger.Println("Closed all channels.", "Done the cleanup tasks and shutting down...")
 }

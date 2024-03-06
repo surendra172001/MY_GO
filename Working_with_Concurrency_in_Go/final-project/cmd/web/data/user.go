@@ -3,9 +3,10 @@ package data
 import (
 	"context"
 	"errors"
-	"golang.org/x/crypto/bcrypt"
 	"log"
 	"time"
+
+	"golang.org/x/crypto/bcrypt"
 )
 
 // User is the structure which holds one user from the database.
@@ -118,7 +119,7 @@ func (u *User) GetByEmail(email string) (*User, error) {
 	// get plan, if any
 	query = `select p.id, p.plan_name, p.plan_amount, p.created_at, p.updated_at from 
 			plans p
-			left join user_plans up on (p.id = up.plan_id)
+			inner join user_plans up on (p.id = up.plan_id)
 			where up.user_id = $1`
 
 	var plan Plan
@@ -195,7 +196,7 @@ func (u *User) GetOne(id int) (*User, error) {
 
 // Update updates one user in the database, using the information
 // stored in the receiver u
-func (u *User) Update() error {
+func (u *User) Update(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
@@ -208,12 +209,12 @@ func (u *User) Update() error {
 		where id = $6`
 
 	_, err := db.ExecContext(ctx, stmt,
-		u.Email,
-		u.FirstName,
-		u.LastName,
-		u.Active,
+		user.Email,
+		user.FirstName,
+		user.LastName,
+		user.Active,
 		time.Now(),
-		u.ID,
+		user.ID,
 	)
 
 	if err != nil {
@@ -224,13 +225,13 @@ func (u *User) Update() error {
 }
 
 // Delete deletes one user from the database, by User.ID
-func (u *User) Delete() error {
+func (u *User) Delete(user *User) error {
 	ctx, cancel := context.WithTimeout(context.Background(), dbTimeout)
 	defer cancel()
 
 	stmt := `delete from users where id = $1`
 
-	_, err := db.ExecContext(ctx, stmt, u.ID)
+	_, err := db.ExecContext(ctx, stmt, user.ID)
 	if err != nil {
 		return err
 	}
